@@ -63,47 +63,52 @@
 
 // event listener to respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
-function buttonClick (printfunction) {
-	document.getElementById('loadQuote').addEventListener("click", printfunction, false);
-}
-
-buttonClick(printQuote);
-buttonClick(changeColor);
-
-// create a function named getRandomQuote
-
-	function getRandomQuote () {
-		// select a random quote object from the quotes array
-		var randomNumber = Math.floor(Math.random() * quotes.length);
-
-		// TODO: Don't display a random quote more than once until ALL quotes from the array have been displayed.
-
-		// returns the randomly selected quote object
-		return randomNumber;
+	function buttonClick (printfunction) {
+		document.getElementById('loadQuote').addEventListener("click", printfunction, false);
 	}
 
+	buttonClick(printQuote);
+	buttonClick(changeColor);
+
+// create a function named getRandomQuote
+	function getRandomNumber () {
+		// select a random quote object from the quotes array
+		return Math.floor(Math.random() * quotes.length);
+	}
+
+	function getRandomQuote (randomNumber) {		
+		// returns the randomly selected quote object
+		var quoteObj = quotes[randomNumber];
+
+		return quoteObj;
+	}
 
 // create a function named printQuote
 
 	function printQuote () {
 		// printQuote calls the getRandomQuote function and stores the returned quote object in a variable
-		var randomObjNumber = getRandomQuote();
-
+		
+		// TODO: Don't display a random quote more than once until ALL quotes from the array have been displayed.
 		if(!quotes.length){
            quotes = quotes.concat(usedQuotes);
            usedQuotes = [];
  		}
 
+ 		var randomNumber = getRandomNumber();
+		var quoteObj = getRandomQuote(randomNumber);
+
+
+
 		// printQuote constructs a string using the different properties of the quote object using the following HTML template:
-		var quote = quotes[randomObjNumber].quote;
-		var source = quotes[randomObjNumber].source;
-		var citation = quotes[randomObjNumber].citation;
-		var year = quotes[randomObjNumber].year;
-		var tag = quotes[randomObjNumber].tag;
+		var quoteText = quoteObj.quote;
+		var source = quoteObj.source;
+		var citation = quoteObj.citation;
+		var year = quoteObj.year;
+		var tag = quoteObj.tag;
 
 		var quoteHTML = '';
 
-		quoteHTML +='<p class="quote">' + quote + ' </p> <p class="source">' + source;
+		quoteHTML +='<p class="quote">' + quoteText + ' </p> <p class="source">' + source;
 
 		// printQuote doesn't add a <span class="citation"> for a missing citation or a <span class="year"> if the year property is missing
 		if (citation !== null) {
@@ -123,8 +128,8 @@ buttonClick(changeColor);
 		document.getElementById('quote-box').innerHTML = quoteHTML;
 
 		 if(quotes.length){
-      		usedQuotes.push(quotes[randomObjNumber]);
-      		quotes.splice(randomObjNumber, 1);
+      		usedQuotes.push(quotes[randomNumber]);
+      		quotes.splice(randomNumber, 1);
    		}
 
 	}
